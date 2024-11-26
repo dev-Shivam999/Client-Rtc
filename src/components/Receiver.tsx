@@ -1,34 +1,36 @@
 import { useEffect, useRef } from "react";
 
-export const Receiver = ({socket,Id}:{socket:WebSocket,Id:string}) => {
+export const Receiver = ({ socket, Id }: { socket: WebSocket, Id: string }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const LocalVideoRef = useRef<HTMLVideoElement | null>(null);
-    
+
     useEffect(() => {
 
-      
-
+        
+        
         const pc = new RTCPeerConnection({
             iceServers: [
-                { urls: "stun:stun.l.google.com:19302" }, 
+                { urls: "stun:stun.l.google.com:19302" },
             ],
         });
+        getMediaStream(pc)
 
         pc.ontrack = (event) => {
             event.streams.forEach((stream) => {
                 if (event.track.kind === "video" && videoRef.current) {
                     videoRef.current.srcObject = stream;
-                
-                }
-              
 
-              
+                }
+
+
+
             });
         };
 
         socket.onmessage = async (event) => {
             const message = JSON.parse(event.data);
-            
+
+
 
             if (message.type === "createOffer") {
                 await pc.setRemoteDescription(new RTCSessionDescription(message.sdp));
@@ -39,15 +41,16 @@ export const Receiver = ({socket,Id}:{socket:WebSocket,Id:string}) => {
                     JSON.stringify({
                         type: "createAnswer",
                         sdp: pc.localDescription,
-                        RoomId:Id
+                        RoomId: Id
                     })
                 );
             } else if (message.type === "iceCandidate") {
                 await pc.addIceCandidate(new RTCIceCandidate(message.candidate));
+            } else if (message.type === "userDisConnect") {
+                alert("meeting over")
             }
         };
 
-        getMediaStream(pc)
         return () => {
             socket.close();
             pc.close();
@@ -75,9 +78,9 @@ export const Receiver = ({socket,Id}:{socket:WebSocket,Id:string}) => {
         <div>
 
 
-            
+
             <h2>Receiver</h2>
-            <video ref={videoRef} width={300} height={300}  autoPlay ></video>
+            <video ref={videoRef} width={300} height={300} autoPlay ></video>
             <br />
             <video ref={LocalVideoRef} width={300} height={300} muted autoPlay ></video>
         </div>

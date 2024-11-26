@@ -7,9 +7,11 @@ const Home = () => {
     const [component, setComponent] = useState<string | null>(null)
     const [RoomId, setRooId] = useState<string >("")
     const [waiting,setWaiting] = useState<string>("null")
-    const socket = useMemo(() => new WebSocket("ws://localhost:8080"), [])
+    console.log(import.meta.env.VITE_URL);
+    
+    const socket = useMemo(() => new WebSocket(`${import.meta.env.VITE_URL}`), [])
     useEffect(() => {
-       
+        getMediaStream()
         socket.onmessage = (message) => {
             const data = JSON.parse(message.data)
             if (data.type == "user") {
@@ -26,7 +28,15 @@ const Home = () => {
         }
     }, [])
     console.log(waiting);
-    
+    const getMediaStream = () => {
+        navigator.mediaDevices
+            .getUserMedia({ video: true, audio: true })
+          
+            .catch((error) => {
+            alert("plz give allow")    
+            
+            });
+    };
 
     const Join=()=>{
         

@@ -56,6 +56,8 @@ export const Sender = ({ newSocket ,Id}: { newSocket :WebSocket,Id:string}) => {
                 await newPC.setRemoteDescription(new RTCSessionDescription(message.sdp));
             } else if (message.type === "iceCandidate") {
                 await newPC.addIceCandidate(new RTCIceCandidate(message.candidate));
+            } else if (message.type === "userDisConnect") {
+                alert("meeting over")
             }
         };
 
