@@ -7,9 +7,7 @@ const Home = () => {
     const [component, setComponent] = useState<string | null>(null)
     const [RoomId, setRooId] = useState<string >("")
     const [waiting,setWaiting] = useState<string>("null")
-    console.log(import.meta.env.VITE_URL);
-    
-    const socket = useMemo(() => new WebSocket(`${import.meta.env.VITE_URL}`), [])
+    const socket = useMemo(() => new WebSocket("ws://localhost:8080"), [])
     useEffect(() => {
         getMediaStream()
         socket.onmessage = (message) => {
