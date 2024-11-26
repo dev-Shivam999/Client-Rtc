@@ -7,7 +7,7 @@ const Home = () => {
     const [component, setComponent] = useState<string | null>(null)
     const [RoomId, setRooId] = useState<string >("")
     const [waiting,setWaiting] = useState<string>("null")
-    const socket = useMemo(() => new WebSocket("ws://localhost:8080"), [])
+    const socket = useMemo(() => new WebSocket("wss://p2p-server-mss2.onrender.com"), [])
     useEffect(() => {
        
         socket.onmessage = (message) => {
