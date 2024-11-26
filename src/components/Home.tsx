@@ -30,8 +30,9 @@ const Home = () => {
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: true })
           
-            .catch(() => {
+            .catch((error) => {
             alert("plz give allow")    
+            console.log(error);
             
             });
     };
