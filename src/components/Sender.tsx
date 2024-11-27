@@ -21,10 +21,18 @@ export const Sender = ({ newSocket ,Id}: { newSocket :WebSocket,Id:string}) => {
 
         const newPC = new RTCPeerConnection({
             iceServers: [
-                { urls: "stun:stun.l.google.com:19302" }, // Public STUN server
+                { urls: "stun:stun.l.google.com:19302" },
+                { urls: "stun:iphone-stun.strato-iphone.de:3478" },
+                { urls: "stun:numb.viagenie.ca:3478" },
+                { urls: "stun:s1.taraba.net:3478" },
+                { urls: "stun:s2.taraba.net:3478" },
+                { urls: "stun:stun.12connect.com:3478" },
+                { urls: "stun:stun.12voip.com:3478" },
             ],
         });
         SETPeer(newPC)
+
+        getMediaStream(newPC);
         newPC.ontrack = async(event) => {
             console.log(event.streams[0]);
             
@@ -74,7 +82,6 @@ export const Sender = ({ newSocket ,Id}: { newSocket :WebSocket,Id:string}) => {
             );
         };
 
-        getMediaStream(newPC);
     };
 
     const getMediaStream = (peerConnection: RTCPeerConnection) => {

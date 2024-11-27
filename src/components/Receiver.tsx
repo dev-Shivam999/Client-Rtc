@@ -11,6 +11,12 @@ export const Receiver = ({ socket, Id }: { socket: WebSocket, Id: string }) => {
         const pc = new RTCPeerConnection({
             iceServers: [
                 { urls: "stun:stun.l.google.com:19302" },
+                { urls: "stun:iphone-stun.strato-iphone.de:3478" },
+                { urls: "stun:numb.viagenie.ca:3478" },
+                { urls: "stun:s1.taraba.net:3478" },
+                { urls: "stun:s2.taraba.net:3478" },
+                { urls: "stun:stun.12connect.com:3478" },
+                { urls: "stun:stun.12voip.com:3478" },
             ],
         });
         getMediaStream(pc)
